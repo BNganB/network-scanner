@@ -43,7 +43,7 @@ def format_results(result):
         if company_value in ("", None):
             company_value = "Unsure"
         print(
-            f"IP: {received.psrc} - MAC: {received.hwsrc} - Company: {company_value}")
+            f"IP: {received.psrc} - MAC: {received.hwsrc} - Vendor: {company_value}")
 
 
 if __name__ == "__main__":
