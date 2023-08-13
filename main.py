@@ -7,15 +7,37 @@ import json
 
 def get_ip_address():
     ipv4_pattern = r'IPv4 Address\. . . . . . . . . . . : (\d+\.\d+\.\d+\.\d+)'
-    raw_output = str(subprocess.run("ipconfig", capture_output=True))
+    raw_output = subprocess.run("ipconfig", capture_output=True, text=True).stdout
 
     match = re.search(ipv4_pattern, raw_output)
 
     if match:
         ipv4_address = match.group(1)
-        return ipv4_address + "/23"
+        return ipv4_address
     else:
         return 1
+
+def get_address_range(ip_address):
+    cidr = input("Please input the ip range (Default = /23):\n")
+    if cidr.startswith("/"):
+        return ip_address + cidr
+    else:
+        return (f"{ip_address}/{cidr}")
+    
+
+def calc_subset_mask(ip_address):
+    cidr = int(ip_address[-2] + ip_address[-1])
+    # if this doesn't work for other test cases (single digit range), use find (kinda bad tho)
+    # index_of_slash = ip_address.find("/")
+    # cidr = ip_address[index_of_slash + 1]
+    cidr_to_bits = 32 - cidr
+
+    binary_subset_mask = "1" * cidr_to_bits + "0" * (32 - cidr_to_bits)
+
+    subnet_mask = '.'.join([str(int(binary_subset_mask[i:i+8], 2)) for i in range(0, 32, 8)])
+
+    return subnet_mask
+
 
 
 def create_ARP_packet(ip_address):
@@ -30,8 +52,8 @@ def send_packet(packet):
     return result
 
 
-def format_results(result):
-    print("Devices in the network:")
+def format_results(result, subnet_mask):
+    print(f"Subnet mask - {subnet_mask}\nDevices in the network:")
     for sent, received in result:
         mac_address = received.hwsrc
         # so ugly maybe take api request into another function?
@@ -49,10 +71,10 @@ def format_results(result):
 if __name__ == "__main__":
     ip = get_ip_address()
     if ip == 1:
-        print("Cannot get ip from cmd")
-        exit()
+        print("Cannot get ip from cmd");exit()
     else:
+        ip = get_address_range(ip)
         packet = create_ARP_packet(ip)
         result = send_packet(packet)
-        print(result)
-        format_results(result)
+        subset_mask = calc_subset_mask(ip)
+        format_results(result, subset_mask)
