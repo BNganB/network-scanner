@@ -75,6 +75,7 @@ if __name__ == "__main__":
     else:
         ip = get_address_range(ip)
         packet = create_ARP_packet(ip)
+        # SYN > SYN ACK > ACK
         result = send_packet(packet)
         subset_mask = calc_subset_mask(ip)
         format_results(result, subset_mask)
