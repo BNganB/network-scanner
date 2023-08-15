@@ -6,5 +6,5 @@ Windows deps:
 Linux deps:
 ```sudo apt install libpcap0.8```
 
-Gets company name from MAC address using
+Gets vendor name from first 3 pairs of MAC address using
 >https://www.macvendorlookup.com/api
