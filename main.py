@@ -18,7 +18,9 @@ def get_ip_address():
         return 1
 
 def get_address_range(ip_address):
-    cidr = input("Please input the ip range (Default = /23):\n")
+    cidr = input("Input custom CIDR (Default = /24, enter to continue):\n")
+    if cidr in (None, "", "n", "no", "No", "skip"):
+        cidr = "/24"
     if cidr.startswith("/"):
         return ip_address + cidr
     else:
