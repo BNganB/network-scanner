@@ -4,7 +4,7 @@ import re
 import requests
 import json
 
-
+# just use tty if on linux?
 def get_ip_address():
     ipv4_pattern = r'IPv4 Address\. . . . . . . . . . . : (\d+\.\d+\.\d+\.\d+)'
     raw_output = subprocess.run("ipconfig", capture_output=True, text=True).stdout
@@ -16,6 +16,11 @@ def get_ip_address():
         return ipv4_address
     else:
         return 1
+
+# tty backup solution on linux
+def get_ip_address_v2():
+    ip = subprocess.run("tty", capture_output=True, text=True).stdout
+    return int(ip)
 
 def get_address_range(ip_address):
     cidr = input("Input custom CIDR (Default = /24, enter to continue):\n")
