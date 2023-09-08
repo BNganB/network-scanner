@@ -1,5 +1,8 @@
 # network-scanner
 
+MAC address = main.py
+Ports = socket-scanner.py
+
 Windows deps:
 >https://npcap.com/
 
@@ -8,3 +11,4 @@ Linux deps:
 
 Gets vendor name from first 3 pairs of MAC address using
 >https://www.macvendorlookup.com/api
+
