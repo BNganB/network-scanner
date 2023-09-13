@@ -4,6 +4,8 @@ import sys
 import socket
 from datetime import datetime
 
+PORT_RANGE = (50, 85)
+
 #Define target
 if len(sys.argv) == 2: #argv = amount of arguments given
 	target = socket.gethostbyname(sys.argv[1]) #Translate hostname to IPv4
@@ -16,7 +18,7 @@ print(f"Time started: {datetime.now()}")
 print("-" * 50)
 
 try:
-	for port in range(50, 85):
+	for port in range(PORT_RANGE):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		socket.setdefaulttimeout(1)
 		result = s.connect_ex((target,port))
