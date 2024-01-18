@@ -13,6 +13,7 @@ def get_ip_address():
 
     if match:
         ipv4_address = match.group(1)
+        print(ipv4_address)
         return ipv4_address
     else:
         return 1
