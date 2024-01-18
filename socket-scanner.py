@@ -3,12 +3,24 @@
 import sys
 import socket
 import threading
-from datetime import datetime
+import time
 import re
 
 
 PORT_RANGE_MIN = 0
 PORT_RANGE_MAX = 1023
+open_ports = []
+timer = time.strftime("%Y%m%d-%H%M%S")
+
+def save_to_file(ip, date, ports):
+    with open(f"{timer} log.txt", "x") as f:
+        f.write(f"{date}\n{ip}\n\n")
+        for port in ports:
+            f.write(f"{port} is open\n")
+        f.write("EOF")
+    print("Log saved!")
+
+
 
 def scan_port(target, port):
     try:
@@ -17,6 +29,7 @@ def scan_port(target, port):
         result = s.connect_ex((target, port))
         if result == 0:  # 0 = open, 1 = closed
             print(f"Port {port} is open")
+            open_ports.append(port)
         s.close()
     except KeyboardInterrupt:
         print("\nExiting...")
@@ -50,7 +63,7 @@ def main():
 
     print("-" * 50)
     print(f"Scanning target {target}")
-    print(f"Time started: {datetime.now()}")
+    print(f"Time started: {timer}")
     print("-" * 50)
 
     try:
@@ -65,6 +78,8 @@ def main():
     except KeyboardInterrupt:
         print("\nExiting...")
         sys.exit()
+
+    save_to_file(ip_address, timer, open_ports)
 
 if __name__ == "__main__":
     main()
