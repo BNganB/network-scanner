@@ -5,6 +5,7 @@ import socket
 import threading
 import time
 import re
+import os
 
 
 PORT_RANGE_MIN = 0
@@ -13,7 +14,9 @@ open_ports = []
 timer = time.strftime("%Y%m%d-%H%M%S")
 
 def save_to_file(ip, date, ports):
-    with open(f"{timer} log.txt", "x") as f:
+    if not os.path.exists(os.path.join(os.getcwd(), "logs")):
+        os.mkdir("logs")
+    with open(f"logs/{timer} log.txt", "x") as f:
         f.write(f"{date}\n{ip}\n\n")
         for port in ports:
             f.write(f"{port} is open\n")
@@ -47,7 +50,7 @@ def is_valid_ip(ip_str):
 
 def main():
     if len(sys.argv) != 2:
-        print("Invalid amount of arguments\nSyntax: python3 scanner.py <ip>")
+        print("Invalid amount of arguments\nSyntax: python3 socket-scanner.py <ip>")
         sys.exit()
 
     ip_address = sys.argv[1]

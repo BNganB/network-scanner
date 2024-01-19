@@ -1,0 +1,8 @@
+20240119-055425
+192.168.1.1
+
+53 is open
+80 is open
+139 is open
+445 is open
+EOF
